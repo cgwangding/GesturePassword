@@ -165,7 +165,7 @@
     CGContextAddLines(context, points, self.lineArray.count);
     CGContextSetStrokeColorWithColor(context, self.lineColor.CGColor);
     
-    
+    CGContextSetStrokeColorWithColor(context, self.lineColor.CGColor);
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextSetLineWidth(context, 1);
     CGContextStrokePath(context);
@@ -178,6 +178,7 @@
  */
 - (void)buildUIForWrongPwdStateWithContext:(CGContextRef)context
 {
+    //绘制错误时线的样子
     CGPoint *points = (CGPoint*)malloc(sizeof(CGPoint) * self.lineArray.count);
     for (int i = 0; i < self.lineArray.count; i++) {
         CGPoint point = [self.lineArray[i] CGPointValue];
@@ -190,7 +191,7 @@
     CGContextSetLineWidth(context, 1);
     CGContextStrokePath(context);
     
-    
+    //绘制错误时圆环
     CGMutablePathRef muStrokePath1 = CGPathCreateMutable();
     CGMutablePathRef muStrokePath2 = CGPathCreateMutable();
     for (NSValue *pValue in self.curSelArray) {
@@ -204,7 +205,6 @@
         CGPathAddArc(muStrokePath2, NULL, [pValue CGPointValue].x, [pValue CGPointValue].y, 14, 0, M_PI * 2, NO);
         
     }
-    
     CGContextSetFillColorWithColor(context, self.wrongTintColor.CGColor);
     CGContextFillPath(context);
     
@@ -226,8 +226,14 @@
     
 }
 
+/**
+ *  绘制当前的线
+ *
+ *  @param context 当前上下文
+ */
 - (void)buildCurrentLineWithContext:(CGContextRef)context
 {
+    //绘制当前的线
     if (self.lineArray.count > 0) {
         CGPoint lastPoint = [[self.lineArray lastObject] CGPointValue];
         CGContextMoveToPoint(context,lastPoint.x, lastPoint.y);
@@ -265,6 +271,13 @@
     return isAllPass;
 }
 
+/**
+ *  判断当前触摸的点是否在基础点的范围内
+ *
+ *  @param point 当前点
+ *
+ *  @return 基础点
+ */
 - (NSValue*)isPointTouchInRect:(CGPoint)point
 {
     for (NSValue *pointValue in self.basePointArray) {
@@ -310,6 +323,9 @@
 {
 
     self.isTouchMoving = YES;
+    /**
+     *  当密码错误时，应清空线，以及高亮点的数据
+     */
     if (self.isNeedShowingWrongPwdState) {
         self.isNeedShowingWrongPwdState = NO;
         [self.curSelArray removeAllObjects];
@@ -328,11 +344,9 @@
         if (![self.curSelArray containsObject:value]) {
             [self.curSelArray addObject:value];
             [self.lineArray addObject:value];
-            
         }
-        
-        
     }
+    //记录当前点，用来绘制当前的线
     self.currentTouch = currentPoint;
      [self setNeedsDisplay];
 }
@@ -351,11 +365,11 @@
             break;
         case GestureModeSetPassword:
         {
-            //设置密码
+            //设置密码，isNeedKeepLine验证密码时或者密码错误时为YES
             if (self.isNeedKeepLine) {
+                //检查密码是否正确
                 if ([self checkPwdCorrectWithArray:self.lineArray] == NO) {
                     self.isNeedShowingWrongPwdState = YES;
-                    
                 }
                 if ([self.delegate respondsToSelector:@selector(gesturePasswordViewDidCheckPassword:)]) {
                     [self.delegate gesturePasswordViewDidCheckPassword:!self.isNeedShowingWrongPwdState];
@@ -380,6 +394,7 @@
                     self.isNeedShowingWrongPwdState = YES;
                     
                 }else{
+                    //如果是修改密码，将模式置为设置密码
                     if (self.isChangingPassword) {
                         self.mode = GestureModeSetPassword;
                         [self.lineArray removeAllObjects];
@@ -390,6 +405,7 @@
                         return;
                     }
                 }
+                
                 if ([self.delegate respondsToSelector:@selector(gesturePasswordViewDidCheckPassword:)]) {
                     [self.delegate gesturePasswordViewDidCheckPassword:!self.isNeedShowingWrongPwdState];
                 }

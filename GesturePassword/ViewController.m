@@ -23,6 +23,7 @@
     GesturePasswordView *view = [[GesturePasswordView alloc]initWithFrame:self.view.frame];
     view.backgroundColor = [UIColor darkGrayColor];
     view.delegate = self;
+    view.basePointColor = [UIColor redColor];
     view.leftInset = 30;
     view.mode = GestureModeModifyPassword;
     [self.view addSubview:view];

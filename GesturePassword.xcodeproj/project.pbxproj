@@ -424,6 +424,7 @@
 				DCC9E3EF1B58FDD4004E1560 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DCC9E3F01B58FDD4004E1560 /* Build configuration list for PBXNativeTarget "GesturePasswordTests" */ = {
 			isa = XCConfigurationList;
@@ -432,6 +433,7 @@
 				DCC9E3F21B58FDD4004E1560 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

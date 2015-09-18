@@ -85,7 +85,6 @@
             [self buildCurrentLineWithContext:context];
         }
     }
-
 }
 
 - (void)bulidBasePwdUIWithContext:(CGContextRef)context
@@ -126,7 +125,6 @@
     //画亮起的圆
     CGContextSetFillColorWithColor(context, self.lightPointColor.CGColor);
     CGContextFillPath(context);
-    
     //画圆环1
     CGContextAddPath(context, muStrokePath1);
     CGContextSetStrokeColorWithColor(context, self.pointCircleColor.CGColor);
@@ -134,16 +132,13 @@
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextDrawPath(context, kCGPathStroke);
     CGPathRelease(muStrokePath1);
-    
-        //画圆环2
+    //画圆环2
     CGContextAddPath(context, muStrokePath2);
     CGContextSetStrokeColorWithColor(context, self.pointCircleColor.CGColor);
     CGContextSetLineWidth(context, 3);
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextDrawPath(context, kCGPathStroke);
     CGPathRelease(muStrokePath2);
-    
-    
 }
 
 - (void)bulidLineWithContext:(CGContextRef)context
@@ -163,7 +158,6 @@
         points[i].y = point.y;
     }
     CGContextAddLines(context, points, self.lineArray.count);
-    CGContextSetStrokeColorWithColor(context, self.lineColor.CGColor);
     
     CGContextSetStrokeColorWithColor(context, self.lineColor.CGColor);
     CGContextSetLineCap(context, kCGLineCapRound);
@@ -205,6 +199,7 @@
         CGPathAddArc(muStrokePath2, NULL, [pValue CGPointValue].x, [pValue CGPointValue].y, 14, 0, M_PI * 2, NO);
         
     }
+    //绘制错误时点的样子
     CGContextSetFillColorWithColor(context, self.wrongTintColor.CGColor);
     CGContextFillPath(context);
     
@@ -321,7 +316,7 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-
+    
     self.isTouchMoving = YES;
     /**
      *  当密码错误时，应清空线，以及高亮点的数据
@@ -335,7 +330,7 @@
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-
+    
     UITouch *touch = [touches anyObject];
     CGPoint currentPoint = [touch locationInView:self];
     NSValue *value = [self isPointTouchInRect:currentPoint];
@@ -348,7 +343,7 @@
     }
     //记录当前点，用来绘制当前的线
     self.currentTouch = currentPoint;
-     [self setNeedsDisplay];
+    [self setNeedsDisplay];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -415,9 +410,6 @@
         default:
             break;
     }
-    
-
-    
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -465,6 +457,20 @@
         }
     }
     return _pwdArray;
+}
+
+- (NSString *)pwdStr
+{
+    NSString *getStr = @"";
+    for (int i = 0; i < self.basePointArray.count; i++) {
+        for (NSValue *value in self.pwdArray) {
+            if ([value isEqualToValue:self.basePointArray[i]]) {
+                getStr  = [getStr stringByAppendingFormat:@"%d",i];
+                continue;
+            }
+        }
+    }
+    return getStr;
 }
 
 @end

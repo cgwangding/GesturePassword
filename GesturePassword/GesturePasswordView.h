@@ -48,6 +48,8 @@ typedef NS_ENUM(NSUInteger, GestureMode) {
 //手势区域距离左边view的距离，默认50，右边和左边相同，不用设置
 @property (nonatomic, assign) CGFloat leftInset;
 
+@property (nonatomic, copy) NSString *pwdStr;
+
 
 @end
 

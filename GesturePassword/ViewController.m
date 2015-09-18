@@ -8,10 +8,14 @@
 
 #import "ViewController.h"
 #import "GesturePasswordView.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface ViewController ()<GesturePasswordViewDelegate>
-
+{
+    GesturePasswordView *view;
+}
 @property (nonatomic,strong) UILabel *label;
+
 
 @end
 
@@ -20,12 +24,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    GesturePasswordView *view = [[GesturePasswordView alloc]initWithFrame:self.view.frame];
+     view = [[GesturePasswordView alloc]initWithFrame:self.view.frame];
     view.backgroundColor = [UIColor darkGrayColor];
     view.delegate = self;
     view.basePointColor = [UIColor redColor];
     view.leftInset = 30;
-    view.mode = GestureModeModifyPassword;
+    view.mode = GestureModeSetPassword;
     [self.view addSubview:view];
     
     self.label = [[UILabel alloc]initWithFrame:CGRectMake(0, 500, 400, 20)];
@@ -46,6 +50,7 @@
 
 - (void)gesturePasswordViewDidCheckPassword:(BOOL)isCorrect
 {
+    NSLog(@"%@",view.pwdStr);
     if (isCorrect) {
         self.label.text = @"密码正确";
     }else{
